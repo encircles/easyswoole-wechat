@@ -60,5 +60,29 @@ return [
             'scopes' => ['snsapi_userinfo'],
             'callback' => 'http://encircles.cn/wechat/index/oauth_callback',
         ],
+    ],
+    'database' => [
+        // 数据库类型
+        'type'            => 'mysql',
+        // 服务器地址
+        'hostname'        => '122.114.109.218',
+        // 数据库名
+        'database'        => 'pcds_ybshenbian_com',
+        // 用户名
+        'username'        => 'pcds',
+        // 密码
+        'password'        => 'pcds_haozhong',
+        // 端口
+        'hostport'        => '3306',
+        // 数据库表前缀
+        'prefix'          => 'dyr_',
+        // 是否需要断线重连
+        'break_reconnect' => true,
+        //分页配置
+        'paginate'               => [
+            'type'      => 'bootstrap',
+            'var_page'  => 'page',
+            'list_rows' => 15,
+        ],
     ]
 ];

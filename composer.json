@@ -21,7 +21,8 @@
         "jeremeamia/SuperClosure": "^2.3",
         "dragonmantank/cron-expression": "^2.1",
         "overtrue/wechat": "^4.0",
-        "topthink/think-template": "^1.0"
+        "topthink/think-template": "^1.0",
+        "topthink/think-orm": "^1.2"
     },
     "autoload": {
         "psr-4": {

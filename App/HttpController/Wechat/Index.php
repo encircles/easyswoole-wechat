@@ -25,7 +25,43 @@ class Index extends Controller
 
     function index()
     {
+
+        $str = sha1("jsapi_ticket=sM4AOVdWfPE4DxkXGEs8VMCPGGVi4C3VM0P37wVUCFvkVAy_90u5h9nbSlYy3-Sl-HhTdfl2fzFy1AOcHKP7qg&noncestr=Wm3WZYTPz0wzccnW&timestamp=1414587457&url=http://mp.weixin.qq.com?params=value");
+        $this->response()->write($str);
         // TODO: Implement index() method.
+    }
+
+    public function createMenu()
+    {
+        $buttons = [
+            [
+                "type" => "view",
+                "name" => "首页",
+                "url"  => "https://www.encircles.cn"
+            ],
+            [
+                "name"       => "菜单",
+                "sub_button" => [
+                    [
+                        "type" => "view",
+                        "name" => "搜索",
+                        "url"  => "http://www.soso.com/"
+                    ],
+                    [
+                        "type" => "view",
+                        "name" => "视频",
+                        "url"  => "http://v.qq.com/"
+                    ],
+                    [
+                        "type" => "click",
+                        "name" => "赞一下我们",
+                        "key" => "V1001_GOOD"
+                    ],
+                ],
+            ],
+        ];
+        $res = $this->app->menu->create($buttons);
+        $this->writeJson(200, $res, 'success');
     }
 
     /**
@@ -37,8 +73,6 @@ class Index extends Controller
         try {
             //$jssdk_signature = $this->app->jssdk->buildConfig(array('onMenuShareQQ', 'onMenuShareWeibo', 'onMenuShareTimeline', 'onMenuShareAppMessage', 'chooseWXPay'), $debug);
             $jssdk_signature = $this->app->jssdk->buildConfig(array('onMenuShareQQ', 'onMenuShareWeibo', 'onMenuShareTimeline', 'onMenuShareAppMessage'), $debug);
-            Logger::getInstance()->log(json_encode($this->app->jssdk->getTicket()), 'debug');
-            Logger::getInstance()->log(json_encode($this->app->jssdk->getUrl()), 'debug');
         } catch (InvalidConfigException $e) {
         } catch (\Psr\SimpleCache\InvalidArgumentException $e) {
         }
@@ -66,7 +100,7 @@ class Index extends Controller
     public function __construct(string $actionName, Request $request, Response $response)
     {
         $config = Config::getInstance()->getConf('wechat');
-        var_dump($config);
+        //var_dump($config);
 
         $this->app = Factory::officialAccount($config);
 
