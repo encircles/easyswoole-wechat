@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Index</title>
+    <link rel="stylesheet" href="/Public/index/css/index.css">
+    <script src="/Public/index/js/index.js"></script>
+    <script src="https://res.wx.qq.com/open/js/jweixin-1.2.0.js" type="text/javascript" charset="utf-8"></script>
+    <script>
+
+        wx.config({
+            debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+            appId: '{$jssdk_arr.appId}', // 必填，公众号的唯一标识
+            timestamp: '{$jssdk_arr.timestamp}', // 必填，生成签名的时间戳
+            nonceStr: '{$jssdk_arr.nonceStr}', // 必填，生成签名的随机串
+            signature: '{$jssdk_arr.signature}',// 必填，签名
+            jsApiList: [
+                'onMenuShareQQ',
+                'onMenuShareWeibo',
+                'onMenuShareTimeline',
+                'onMenuShareAppMessage'
+            ] // 必填，需要使用的JS接口列表
+        });
+    </script>
+</head>
+<body>
+shouye
+<pre>
+{:var_dump($jssdk_arr)}
+{:var_dump($_SERVER)}
+{:var_dump($jssdk)}
+{:var_dump($uri)}
+</pre>
+
+</body>
+</html>
+

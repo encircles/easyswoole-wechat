@@ -20,6 +20,9 @@ return [
             'max_request'=>5000,//强烈建议设置此配置项
             'worker_num'=>8
         ],
+        // 加入以下两条配置以返回静态文件
+        'document_root'         => EASYSWOOLE_ROOT.'/Public',  // 静态资源目录
+        'enable_static_handler' => true,
     ],
     'DEBUG'=>true,
     'TEMP_DIR'=>null,//若不配置，则默认框架初始化

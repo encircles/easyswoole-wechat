@@ -39,9 +39,9 @@ Class EasySwooleEvent implements EventInterface {
 
         // TODO: Implement onRequest() method.
 
-        if (!empty($_SERVER)) {
-            unset($_SERVER);
-        }
+//        if (!empty($_SERVER)) {
+//            unset($_SERVER);
+//        }
         if (isset($req->server)) {
             foreach ($req->server as $k => $v) {
                 $_SERVER[strtoupper($k)] = $v;
@@ -53,18 +53,18 @@ Class EasySwooleEvent implements EventInterface {
             }
         }
 
-        if (!empty($_GET)) {
-            unset($_GET);
-        }
+//        if (!empty($_GET)) {
+//            unset($_GET);
+//        }
         if (isset($req->get)) {
             foreach ($req->get as $k => $v) {
                 $_GET[$k] = $v;
             }
         }
 
-        if (!empty($_POST)) {
-            unset($_POST);
-        }
+//        if (!empty($_POST)) {
+//            unset($_POST);
+//        }
         if (isset($req->post)) {
             foreach ($req->post as $k => $v) {
                 $_POST[$k] = $v;
