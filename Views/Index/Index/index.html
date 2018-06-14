@@ -9,16 +9,14 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="white"/>
     <meta name="apple-mobile-web-app-capable" content="yes">
     <title>Index</title>
-    <!--<link rel="stylesheet" href="/Public/index/css/index.css">-->
+
 
     <!-- head 中 -->
     <link rel="stylesheet" href="https://cdn.bootcss.com/weui/1.1.2/style/weui.min.css">
     <link rel="stylesheet" href="https://cdn.bootcss.com/jquery-weui/1.2.0/css/jquery-weui.min.css">
-
-
+    <link rel="stylesheet" href="/Public/index/css/index.css">
     <script src="/Public/index/js/index.js"></script>
     <script src="https://res.wx.qq.com/open/js/jweixin-1.2.0.js" type="text/javascript" charset="utf-8"></script>
-
     <script>
 
         wx.config({
@@ -35,41 +33,105 @@
             ] // 必填，需要使用的JS接口列表
         });
 
-        wx.ready(function () {
-//             wx.getLocation({
-//                 type: 'wgs84', // 默认为wgs84的gps坐标，如果要返回直接给openLocation用的火星坐标，可传入'gcj02'
-//                 success: function (res) {
-// //                    var latitude = res.latitude; // 纬度，浮点数，范围为90 ~ -90
-// //                    var longitude = res.longitude; // 经度，浮点数，范围为180 ~ -180。
-// //                    var speed = res.speed; // 速度，以米/每秒计
-// //                    var accuracy = res.accuracy; // 位置精度
-//                     wxtranslatePoint(res);
-//                     initwx();
-//
-//                 }
-//             });
-        });
     </script>
+    <style>
+        .weui-btn_warn {
+            /*display: none;*/
+            margin-left: 10px;
+            line-height: 28px;
+            color: #ffffff;
+            white-space: nowrap;
+            background-color: #ED6C00;
+            padding: 0 1.5em 0 1em;
+        }
+
+        .weui-icon-search {
+            color: #ffffff;
+        }
+
+        .weui-search-bar__input {
+            text-align: center;
+        }
+
+    </style>
 </head>
 <body>
 
-<div class="swiper-container" style="width: 100%; height: 180px;" data-space-between='10' data-pagination='.swiper-pagination' data-autoplay="1000">
+<div class="swiper-container" style="width: 100%; height: 180px;" data-space-between='10'
+     data-pagination='.swiper-pagination' data-autoplay="1000">
     <div class="swiper-wrapper">
-        <div class="swiper-slide"><img style="height: 180px;width: 100%;" src="/Public/index/images/index-banner.jpg" alt=""></div>
+        <div class="swiper-slide"><img style="height: 180px;width: 100%;" src="/Public/index/images/index-banner.jpg"
+                                       alt=""></div>
     </div>
 </div>
 
 <div id="app">
-    <div class="weui-cells" style="margin-top: 0;">
-        <div v-for="todo in todos" class="weui-cell">
-            <div class="weui-cell__bd">
-                <p>{{ todo.text }}</p>
+
+    <blog-post>
+
+    </blog-post>
+
+    <div class="weui-search-bar weui-search-bar_focusing" id="searchBar"
+         style="width:100%;position:static;z-index: 9999;">
+        <form class="weui-search-bar__form">
+            <div class="weui-search-bar__box">
+                <!--<i class="weui-icon-search"></i>-->
+                <input type="search" class="weui-search-bar__input" id="searchInput" placeholder="出发地" required="">
+                <a href="javascript:" class="" id="searchClear"></a>
             </div>
-            <div class="weui-cell__ft">说明文字</div>
-        </div>
+            <label class="weui-search-bar__label" id="searchText">
+                <i class="weui-icon-search"></i>
+                <span>出发地</span>
+            </label>
+        </form>
+        <a class="weui-btn weui-btn_mini weui-btn_warn"><i class="weui-icon-search"></i></a>
+        <form class="weui-search-bar__form" style="margin-left:10px;">
+            <div class="weui-search-bar__box">
+                <!--<i class="weui-icon-search"></i>-->
+                <input type="search" class="weui-search-bar__input" id="searchInput" placeholder="目的地" required="">
+                <a href="javascript:" class="weui-icon-clear" id="searchClear"></a>
+            </div>
+            <label class="weui-search-bar__label" id="searchText">
+                <i class="weui-icon-search"></i>
+                <span>目的地</span>
+            </label>
+        </form>
+
+    </div>
+
+    <div id="place" style="width: 100%; height: 46px;display: none;"></div>
+
+    <div class="weui-cells" style="margin-top: 0;">
+        <template v-for="items in lines">
+            <div v-for="line in items.lines" class="weui-cell">
+                <div class="weui-cell__bd">
+                    <div class="weui-flex">
+                        <div>
+                            <div class="placeholder">
+                                <i v-if="line.vip == 1" class="weui-icon-success"></i>
+                            </div>
+                        </div>
+                        <div class="weui-flex__item item-des">{{ line.desa }}</div>
+                        <div class="item-uprice">
+                            <div style="color: #ED6C00;font-size: 12px;">&lt;-&gt;</div>
+                            <div style="font-size: 10px;">{{ line.uprice }}元/人</div>
+
+                        </div>
+                        <div class="weui-flex__item item-des">{{ line.desb }}</div>
+                        <div>
+                            <div class="placeholder">&nbsp;</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </template>
+
     </div>
 
 </div>
+
+{include file="Index/Public/nav"}
 
 </body>
 <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
@@ -81,55 +143,91 @@
 
 <script>
 
-    Vue.use(wx);
+    $(function () {
+//获取要定位元素距离浏览器顶部的距离
+        var navH = $("#searchBar").offset().top;
+
+//滚动条事件
+        $(window).scroll(function () {
+//获取滚动条的滑动距离
+            var scroH = $(this).scrollTop();
+//滚动条的滑动距离大于等于定位元素距离浏览器顶部的距离，就固定，反之就不固定
+            if (scroH >= navH) {
+                $("#searchBar").css({"position": "fixed", "bottom": "50px"});
+                $('#place').show();
+            } else if (scroH < navH) {
+                $("#searchBar").css({"position": "static"});
+                $('#place').hide();
+            }
+        })
+    });
+
+    Vue.component('blog-post', {
+        props: ['post'],
+        template: `
+    <div class="blog-post">
+      <h3>{{ post.title }}</h3>
+      <div v-html="post.content"></div>
+    </div>
+  `
+    })
+
+    //Vue.use(wx);
     var app = new Vue({
         el: '#app',
         data: {
             wx: null,
             lat: '',
             lon: '',
-            todos: [
-                {text: '学习 JavaScript'},
-                {text: '学习 Vue'},
-                {text: '整个牛项目'}
-            ],
-            data: []
+            lines: [{}]
         },
         beforeCreate: function () {
-
+            $.showLoading('定位中');
 
         },
         created: function () {
             var that = this;
-            wx.ready(function () {
-                wx.getLocation({
-                    type: 'wgs84', // 默认为wgs84的gps坐标，如果要返回直接给openLocation用的火星坐标，可传入'gcj02'
-                    success: function (res) {
-                        //alert(JSON.stringify(res));
-                        that.lat = res.latitude; // 纬度，浮点数，范围为90 ~ -90
-                        that.lon = res.longitude; // 经度，浮点数，范围为180 ~ -180。
-                        //alert(that.lon + ',' + that.lat);
-                        axios.post('https://pcds.ybshenbian.com/v1/pointlst', {
-                            page: '1',
-                            mypoint: that.lon + ',' + that.lat
-                        }).then(function (response) {
-                            console.log(response);
-                        }).catch(function (error) {
-                            console.log(error);
-                        });
-                    }
-                });
-            });
 
-            // `this` 指向 vm 实例
-            // https://pcds.ybshenbian.com/v1/pointlst
+            axios.post('https://pcds.ybshenbian.com/v1/pointlst', {
+                page: '1',
+                mypoint: '104.629239,28.770671'
+            }).then(function (response) {
+                console.log(response);
+                that.lines = response.data.data;
+                $.hideLoading();
+            }.bind(this)).catch(function (error) {
+                console.log(error);
+                $.hideLoading();
+            }.bind(this));
+
+            // wx.ready(function () {
+            //
+            //     wx.getLocation({
+            //         type: 'wgs84', // 默认为wgs84的gps坐标，如果要返回直接给openLocation用的火星坐标，可传入'gcj02'
+            //         success: function (res) {
+            //             //alert(JSON.stringify(res));
+            //             that.lat = res.latitude; // 纬度，浮点数，范围为90 ~ -90
+            //             that.lon = res.longitude; // 经度，浮点数，范围为180 ~ -180。
+            //             //alert(that.lon + ',' + that.lat);
+            //             axios.post('https://pcds.ybshenbian.com/v1/pointlst', {
+            //                 page: '1',
+            //                 mypoint: that.lon + ',' + that.lat
+            //             }).then(function (response) {
+            //                 console.log(response);
+            //                 that.lines = response.data.data;
+            //                 $.hideLoading();
+            //             }.bind(this)).catch(function (error) {
+            //                 console.log(error);
+            //                 $.hideLoading();
+            //             }.bind(this));
+            //         }
+            //     });
+            //
+            //
+            // });
 
 
         }
-    });
-
-    $(function () {
-        $(".swiper-container").swiper()
     });
 
 </script>

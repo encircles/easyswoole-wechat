@@ -1,4 +1,50 @@
 * {
     padding: 0;
     margin: 0;
+    font-family: "微软雅黑";
+    font-size: 18px;
+}
+
+.weui-tabbar {
+    position: fixed;
+    bottom: 0;
+}
+.weui-tabbar__item.weui-bar__item--on .weui-tabbar__label {
+    color: #ED6C00;
+}
+
+.weui-cell {
+    padding: 3px 15px 2px 15px;
+}
+.weui-flex__item {
+    text-align: center;
+    height: 2.3em;
+    line-height: 2.3em;
+    margin: 5px;
+}
+
+.placeholder {
+    margin: 5px;
+    /*padding: 0 10px;*/
+    /*background-color: #ebebeb;*/
+
+    text-align: center;
+    color: #cfcfcf;
+    position: absolute;
+    left: 0;
+    top: 10px;
+}
+
+.item-uprice {
+    color: #848484;
+    font-size: 12px;
+    text-align: center;
+    height: 2.3em;
+    line-height: 3.0em;
+}
+.item-uprice div {
+    height: 1.15em;
+}
+.weui-icon-success {
+    color: #ED6C00;
 }
