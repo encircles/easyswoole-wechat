@@ -1,20 +1,21 @@
+
 <div class="weui-tabbar">
-    <a href="javascript:;" class="weui-tabbar__item weui-bar__item--on">
+    <a @click.stop="tab(0)" class="weui-tabbar__item" :class="isIndex ? ' weui-bar__item--on' : ''">
         <!--<span class="weui-badge" style="position: absolute;top: -.4em;right: 1em;">8</span>-->
         <div class="weui-tabbar__icon">
-            <img src="Public/index/images/tar-home-on.png" alt="">
+            <img :src="'Public/index/images/tar-home' + (isIndex ? '-on' : '') + '.png'" alt="">
         </div>
         <p class="weui-tabbar__label">首页</p>
     </a>
-    <a href="javascript:;" class="weui-tabbar__item">
+    <a @click.stop="tab(1)" class="weui-tabbar__item" :class="isPublish ? ' weui-bar__item--on' : ''">
         <div class="weui-tabbar__icon">
-            <img src="Public/index/images/tar-info.png" alt="">
+            <img :src="'Public/index/images/tar-info' + (isPublish ? '-on' : '') + '.png'" alt="">
         </div>
         <p class="weui-tabbar__label">入驻</p>
     </a>
-    <a href="javascript:;" class="weui-tabbar__item">
+    <a @click.stop="tab(2)" class="weui-tabbar__item" :class="isMe ? ' weui-bar__item--on' : ''">
         <div class="weui-tabbar__icon">
-            <img src="Public/index/images/tar-person.png" alt="">
+            <img :src="'Public/index/images/tar-person' + (isMe ? '-on' : '') + '.png'" alt="">
         </div>
         <p class="weui-tabbar__label">我的</p>
     </a>

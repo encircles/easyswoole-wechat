@@ -53,85 +53,184 @@
             text-align: center;
         }
 
+        /* 可以设置不同的进入和离开动画 */
+        /* 设置持续时间和动画函数 */
+        .slide-fade-enter-active {
+            transition: all .3s ease;
+        }
+
+        .slide-fade-leave-active {
+            transition: all .3s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+        }
+
+        .slide-fade-enter, .slide-fade-leave-to
+            /* .slide-fade-leave-active for below version 2.1.8 */
+        {
+            transform: translateX(100%);
+            opacity: 0;
+        }
+
+        .vux-pop-out-enter-active,
+        .vux-pop-out-leave-active,
+        .vux-pop-in-enter-active,
+        .vux-pop-in-leave-active {
+            will-change: transform;
+            transition: all 250ms;
+            height: 100%;
+            top: 0;
+            position: absolute;
+            backface-visibility: hidden;
+            perspective: 1000;
+        }
+
+        .vux-pop-out-enter {
+            opacity: 0;
+            transform: translate3d(-100%, 0, 0);
+        }
+
+        .vux-pop-out-leave-active {
+            opacity: 0;
+            transform: translate3d(100%, 0, 0);
+        }
+
+        .vux-pop-in-enter {
+            opacity: 0;
+            transform: translate3d(100%, 0, 0);
+        }
+
+        .vux-pop-in-leave-active {
+            opacity: 0;
+            transform: translate3d(-100%, 0, 0);
+        }
+
+        [v-cloak] {
+            display: none;
+        }
+        .swiper-slide img {
+            width: 100%;
+            height: 180px;
+        }
     </style>
 </head>
 <body>
 
-<div class="swiper-container" style="width: 100%; height: 180px;" data-space-between='10'
-     data-pagination='.swiper-pagination' data-autoplay="1000">
-    <div class="swiper-wrapper">
-        <div class="swiper-slide"><img style="height: 180px;width: 100%;" src="/Public/index/images/index-banner.jpg"
-                                       alt=""></div>
-    </div>
-</div>
 
 <div id="app">
 
-    <blog-post>
-
-    </blog-post>
-
-    <div class="weui-search-bar weui-search-bar_focusing" id="searchBar"
-         style="width:100%;position:static;z-index: 9999;">
-        <form class="weui-search-bar__form">
-            <div class="weui-search-bar__box">
-                <!--<i class="weui-icon-search"></i>-->
-                <input type="search" class="weui-search-bar__input" id="searchInput" placeholder="出发地" required="">
-                <a href="javascript:" class="" id="searchClear"></a>
-            </div>
-            <label class="weui-search-bar__label" id="searchText">
-                <i class="weui-icon-search"></i>
-                <span>出发地</span>
-            </label>
-        </form>
-        <a class="weui-btn weui-btn_mini weui-btn_warn"><i class="weui-icon-search"></i></a>
-        <form class="weui-search-bar__form" style="margin-left:10px;">
-            <div class="weui-search-bar__box">
-                <!--<i class="weui-icon-search"></i>-->
-                <input type="search" class="weui-search-bar__input" id="searchInput" placeholder="目的地" required="">
-                <a href="javascript:" class="weui-icon-clear" id="searchClear"></a>
-            </div>
-            <label class="weui-search-bar__label" id="searchText">
-                <i class="weui-icon-search"></i>
-                <span>目的地</span>
-            </label>
-        </form>
-
-    </div>
-
-    <div id="place" style="width: 100%; height: 46px;display: none;"></div>
-
-    <div class="weui-cells" style="margin-top: 0;">
-        <template v-for="items in lines">
-            <div v-for="line in items.lines" class="weui-cell">
-                <div class="weui-cell__bd">
-                    <div class="weui-flex">
-                        <div>
-                            <div class="placeholder">
-                                <i v-if="line.vip == 1" class="weui-icon-success"></i>
-                            </div>
-                        </div>
-                        <div class="weui-flex__item item-des">{{ line.desa }}</div>
-                        <div class="item-uprice">
-                            <div style="color: #ED6C00;font-size: 12px;">&lt;-&gt;</div>
-                            <div style="font-size: 10px;">{{ line.uprice }}元/人</div>
-
-                        </div>
-                        <div class="weui-flex__item item-des">{{ line.desb }}</div>
-                        <div>
-                            <div class="placeholder">&nbsp;</div>
-                        </div>
+    <transition name="vux-pop-in">
+        <div v-if="isIndex">
+            <div class="swiper-container" style="width: 100%; height: 180px;" data-space-between='10'
+                 data-pagination='.swiper-pagination' data-autoplay="1000">
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide">
+                        <img src="/Public/index/images/index-banner.jpg">
                     </div>
                 </div>
             </div>
 
-        </template>
 
-    </div>
+            <div class="weui-search-bar weui-search-bar_focusing" id="searchBar"
+                 style="width:100%;position:static;z-index: 9999;">
+                <form class="weui-search-bar__form">
+                    <div class="weui-search-bar__box">
+                        <!--<i class="weui-icon-search"></i>-->
+                        <input type="search" class="weui-search-bar__input" id="searchInputA" placeholder="出发地"
+                               required="">
+                        <a href="javascript:" class="" id="searchClearA"></a>
+                    </div>
+                    <label class="weui-search-bar__label" id="searchTextA">
+                        <i class="weui-icon-search"></i>
+                        <span>出发地</span>
+                    </label>
+                </form>
+                <a @click="test" class="weui-btn weui-btn_mini weui-btn_warn"><i class="weui-icon-search"></i></a>
+                <form class="weui-search-bar__form" style="margin-left:10px;">
+                    <div class="weui-search-bar__box">
+                        <!--<i class="weui-icon-search"></i>-->
+                        <input type="search" class="weui-search-bar__input" id="searchInputB" placeholder="目的地"
+                               required="">
+                        <a href="javascript:" class="weui-icon-clear" id="searchClearB"></a>
+                    </div>
+                    <label class="weui-search-bar__label" id="searchTextB">
+                        <i class="weui-icon-search"></i>
+                        <span>目的地</span>
+                    </label>
+                </form>
 
+            </div>
+
+            <div id="place" style="width: 100%; height: 46px;display: none;"></div>
+
+
+            <div class="weui-cells" style="margin-top: 0;">
+                <template v-for="items in lines">
+                    <div v-for="line in items.lines" class="weui-cell">
+                        <div class="weui-cell__bd">
+                            <div class="weui-flex">
+                                <div>
+                                    <div class="placeholder">
+                                        <i v-if="line.vip == 1" class="weui-icon-success"></i>
+                                    </div>
+                                </div>
+                                <div class="weui-flex__item item-des">{{ line.desa }}</div>
+                                <div class="item-uprice">
+                                    <div style="color: #ED6C00;font-size: 12px;">&lt;-&gt;</div>
+                                    <div style="font-size: 10px;">{{ line.uprice }}元/人</div>
+
+                                </div>
+                                <div class="weui-flex__item item-des">{{ line.desb }}</div>
+                                <div>
+                                    <div class="placeholder">&nbsp;</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </template>
+
+            </div>
+        </div>
+    </transition>
+
+
+    <transition name="vux-pop-in">
+        <div v-if="isPublish" v-cloak>
+            <div class="swiper-container" style="width: 100%; height: 180px;" data-space-between='10'
+                 data-pagination='.swiper-pagination' data-autoplay="1000">
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide">
+                        <img src="/Public/index/images/index-banner.jpg">
+                    </div>
+                </div>
+            </div>
+
+            <div>入驻</div>
+        </div>
+    </transition>
+
+
+    <transition name="vux-pop-in">
+        <div v-if="isMe" v-cloak>
+            <div class="swiper-container" style="width: 100%; height: 180px;" data-space-between='10'
+                 data-pagination='.swiper-pagination' data-autoplay="1000">
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide">
+                        <img src="/Public/index/images/index-banner.jpg">
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                我的
+            </div>
+
+        </div>
+    </transition>
+
+
+    {include file="Index/Public/nav"}
 </div>
 
-{include file="Index/Public/nav"}
 
 </body>
 <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
@@ -140,8 +239,121 @@
 <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 <!--<script src="https://cdn.bootcss.com/axios/0.18.0/axios.js"></script>-->
 <script src="https://cdn.bootcss.com/axios/0.18.0/axios.js"></script>
-
+<script src="/Public/index/js/components/blog-post.js"></script>
 <script>
+
+    document.setTitle = function (t) {
+        document.title = t;
+        var i = document.createElement('iframe');
+        // i.src = '//m.baidu.com/favicon.ico';
+        i.style.display = 'none';
+        i.onload = function () {
+            setTimeout(function () {
+                i.remove();
+            }, 9)
+        };
+        document.body.appendChild(i);
+    };
+
+    var app = new Vue({
+        el: '#app',
+        data: {
+            direction: 0,
+            isIndex: true,
+            isPublish: false,
+            isMe: false,
+            lat: '',
+            lon: '',
+            lines: [],
+            post: {
+                title: 'biaoti'
+            }
+        },
+        beforeCreate: function () {
+            $.showLoading('定位中');
+
+        },
+        created: function () {
+            var that = this;
+
+            var mypoint = window.localStorage.getItem('mypoint');
+            if (!mypoint) {
+                mypoint = '104.629239,28.770671';
+            }
+
+            axios.post('https://pcds.ybshenbian.com/v1/pointlst', {
+                page: '1',
+                mypoint: mypoint
+            }).then(function (response) {
+                console.log(response);
+                that.lines = response.data.data;
+                $.hideLoading();
+            }.bind(this)).catch(function (error) {
+                console.log(error);
+                $.hideLoading();
+            }.bind(this));
+
+
+            wx.ready(function () {
+
+                wx.getLocation({
+                    type: 'wgs84', // 默认为wgs84的gps坐标，如果要返回直接给openLocation用的火星坐标，可传入'gcj02'
+                    success: function (res) {
+                        //alert(JSON.stringify(res));
+                        that.lat = res.latitude; // 纬度，浮点数，范围为90 ~ -90
+                        that.lon = res.longitude; // 经度，浮点数，范围为180 ~ -180。
+
+                        window.localStorage.setItem('mypoint', that.lon + ',' + that.lat);
+                        //alert(that.lon + ',' + that.lat);
+                        axios.post('https://pcds.ybshenbian.com/v1/pointlst', {
+                            page: '1',
+                            mypoint: that.lon + ',' + that.lat
+                        }).then(function (response) {
+                            console.log(response);
+                            that.lines = response.data.data;
+                            $.hideLoading();
+                        }.bind(this)).catch(function (error) {
+                            console.log(error);
+                            $.hideLoading();
+                        }.bind(this));
+                    }
+                });
+
+
+            });
+
+
+        },
+        methods: {
+            test: function (e) {
+                this.isIndex = !this.isIndex;
+            },
+            tab: function (index) {
+                console.log(index);
+                this.direction = index;
+                switch (index) {
+                    case 0:
+                        this.isIndex = true;
+                        this.isPublish = false;
+                        this.isMe = false;
+                        document.setTitle('首页');
+                        break;
+                    case 1:
+                        this.isIndex = false;
+                        this.isPublish = true;
+                        this.isMe = false;
+                        document.setTitle('入驻');
+                        break;
+                    case 2:
+                        this.isIndex = false;
+                        this.isPublish = false;
+                        this.isMe = true;
+                        document.setTitle('我的');
+                        break;
+                }
+            }
+        }
+    });
 
     $(function () {
 //获取要定位元素距离浏览器顶部的距离
@@ -153,81 +365,13 @@
             var scroH = $(this).scrollTop();
 //滚动条的滑动距离大于等于定位元素距离浏览器顶部的距离，就固定，反之就不固定
             if (scroH >= navH) {
-                $("#searchBar").css({"position": "fixed", "bottom": "50px"});
+                $("#searchBar").css({"position": "fixed", "top": "0"});
                 $('#place').show();
             } else if (scroH < navH) {
                 $("#searchBar").css({"position": "static"});
                 $('#place').hide();
             }
         })
-    });
-
-    Vue.component('blog-post', {
-        props: ['post'],
-        template: `
-    <div class="blog-post">
-      <h3>{{ post.title }}</h3>
-      <div v-html="post.content"></div>
-    </div>
-  `
-    })
-
-    //Vue.use(wx);
-    var app = new Vue({
-        el: '#app',
-        data: {
-            wx: null,
-            lat: '',
-            lon: '',
-            lines: [{}]
-        },
-        beforeCreate: function () {
-            $.showLoading('定位中');
-
-        },
-        created: function () {
-            var that = this;
-
-            axios.post('https://pcds.ybshenbian.com/v1/pointlst', {
-                page: '1',
-                mypoint: '104.629239,28.770671'
-            }).then(function (response) {
-                console.log(response);
-                that.lines = response.data.data;
-                $.hideLoading();
-            }.bind(this)).catch(function (error) {
-                console.log(error);
-                $.hideLoading();
-            }.bind(this));
-
-            // wx.ready(function () {
-            //
-            //     wx.getLocation({
-            //         type: 'wgs84', // 默认为wgs84的gps坐标，如果要返回直接给openLocation用的火星坐标，可传入'gcj02'
-            //         success: function (res) {
-            //             //alert(JSON.stringify(res));
-            //             that.lat = res.latitude; // 纬度，浮点数，范围为90 ~ -90
-            //             that.lon = res.longitude; // 经度，浮点数，范围为180 ~ -180。
-            //             //alert(that.lon + ',' + that.lat);
-            //             axios.post('https://pcds.ybshenbian.com/v1/pointlst', {
-            //                 page: '1',
-            //                 mypoint: that.lon + ',' + that.lat
-            //             }).then(function (response) {
-            //                 console.log(response);
-            //                 that.lines = response.data.data;
-            //                 $.hideLoading();
-            //             }.bind(this)).catch(function (error) {
-            //                 console.log(error);
-            //                 $.hideLoading();
-            //             }.bind(this));
-            //         }
-            //     });
-            //
-            //
-            // });
-
-
-        }
     });
 
 </script>
